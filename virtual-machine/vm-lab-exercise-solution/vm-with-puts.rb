@@ -13,13 +13,26 @@ def virtual_computer(memory, registers)
  # Loop will continue until we reach the point in our memory array that
  # contains the halt instruction.
  while memory[registers[PC]] != HALT do
+   puts "============================", "No HALT yet", "============================"
+   puts "PC: ", PC
+   puts "registers[PC]: ", registers[PC]
+   puts "memory[registers[PC]]: ", memory[registers[PC]]
+   puts
    op = memory[registers[PC]]
    registers[PC] += 1
    case op
    when LOAD
+     puts "============================", "IN LOAD", "============================"
+     puts "PC: ", PC
+     puts "registers[PC]: ", registers[PC]
+     puts "memory[registers[PC]]: ", memory[registers[PC]]
      register_address = memory[registers[PC]]
+     puts "register_address: ", register_address
+     puts
      registers[PC] += 1
      word_address = memory[registers[PC]]
+     puts "word_address: ", word_address
+     puts
      registers[PC] += 1
      # load both bytes in word
      # Have to add the 2 bytes together to get the "full value" if the value is greater than 1 byte.
@@ -28,26 +41,52 @@ def virtual_computer(memory, registers)
      # memory[word_address] is the least significant byte
      # memory[word_address + 1] is the most significant byte
      registers[register_address] = memory[word_address] + (256 * memory[word_address + 1])
+     puts "memory[word_address]: ", memory[word_address]
+     puts "(256 * memory[word_address + 1]) : ", (256 * memory[word_address + 1])
+     puts "registers[register_address]: ", registers[register_address]
+     puts
    when STORE
+     puts "============================", "IN STORE", "============================"
+     puts "PC: ", PC
+     puts "registers[PC]: ", registers[PC]
+     puts "memory[registers[PC]]: ", memory[registers[PC]]
      register_address = memory[registers[PC]]
+     puts "register_address: ", register_address
+     puts
      registers[PC] += 1
      word_address = memory[registers[PC]]
+     puts "word_address: ", word_address
+     puts
      registers[PC] += 1
      # We have to split our value so that it's represented by two bytes
      # write first (low order) byte
      # This will be the least significant byte so we find the value modulo 256
      memory[word_address] = registers[register_address] % 256
+     puts "memory[word_address]: ", memory[word_address]
+     puts
      # write second (high order) byte
      # This will be the most significant byte so we find the value divided by 256,
      # which is the reverse of when we multiplied by 256
      memory[word_address + 1] = registers[register_address] / 256
+     puts "memory[word_address + 1]: ", memory[word_address + 1]
+     puts
    when ADD
+     puts "============================", "IN ADD", "============================"
+     puts "PC: ", PC
+     puts "registers[PC]: ", registers[PC]
+     puts "memory[registers[PC]]: ", memory[registers[PC]]
      register_address_a = memory[registers[PC]]
+     puts "register_address_a: ", register_address_a
+     puts
      registers[PC] += 1
      register_address_b = memory[registers[PC]]
+     puts "register_address_b: ", register_address_b
+     puts
      registers[PC] += 1
      # peform computation on values in registers
      registers[register_address_a] = registers[register_address_a] + registers[register_address_b]
+     puts "registers[register_address_a]: ", registers[register_address_a]
+     puts
    end
  end
 end
